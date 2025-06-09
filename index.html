@@ -16,11 +16,13 @@
 
         <form id="addBtnForm" style="text-align:center; margin-bottom:20px;">
         <input type="text" id="btnName" placeholder="店家名稱" required>
-        <input type="text" id="btnUrl" placeholder="網址 (可只填IP)" required>
+        <input type="text" id="btnUrl" placeholder="網址 (可只填IP:PORT)" required>
         <select id="btnType">
             <option value="front-btn">前台</option>
             <option value="back-btn">後台</option>
         </select>
+        <label for="btnColor" style="font-size:16px;margin-right:4px;">顏色選擇</label>
+        <input type="color" id="btnColor" value="#b2f0f7" style="width:40px; height:40px; border:none; margin:0 8px;">
         <button type="submit">儲存</button>
     </form>
 
@@ -34,6 +36,7 @@
         let name = document.getElementById('btnName').value;
         let url = document.getElementById('btnUrl').value;
         const type = document.getElementById('btnType').value;
+        let color = document.getElementById('btnColor').value;
 
         // 自動補上 http://
         if (!/^https?:\/\//i.test(url)) {
@@ -53,7 +56,7 @@
             return;
         }
 
-        const btnData = { name, url, type };
+        const btnData = { name, url, type, color };
         btnList.push(btnData);
         localStorage.setItem('userBtns', JSON.stringify(btnList));
 
@@ -72,6 +75,7 @@
         btn.type = 'button';
         btn.value = btnData.name;
         btn.className = btnData.type;
+        btn.style.backgroundColor = btnData.color || ''; // 設定顏色
         btn.onclick = function() { openWin(btnData.url); };
 
         const delBtn = document.createElement('button');
