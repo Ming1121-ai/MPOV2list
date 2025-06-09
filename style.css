@@ -1,0 +1,94 @@
+h1 {
+    text-align: center;
+    margin-top: 30px;
+    margin-bottom: 30px;
+    font-size: 40px;
+    font-weight: bold;
+    letter-spacing: 6px;
+    color: #222;
+    padding: 10px 40px 18px 40px;
+    border-radius: 18px 18px 0 0;
+}
+
+body {
+    background-color: bisque;
+    justify-content: center;
+    height: 100vh;
+    align-items: center;
+}
+
+
+form {
+    text-align: center;
+}
+
+.front-btn {
+    width: 160px;
+    background-color: paleturquoise;
+    border: 2px solid #ccc;
+    padding: 12px 0;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+}
+
+.back-btn {
+    width: 160px;
+    background-color: ghostwhite;
+    border: 2px solid #ccc;
+    padding: 12px 0;
+    margin: 5px;
+    font-size: 14px;
+    cursor: pointer;
+    border-radius: 10px;
+    box-shadow: 2px 2px 8px rgba(0,0,0,0.2);
+    
+}
+
+.btn-group input {
+    margin: 10px 10px;
+}
+
+.front-btn, .back-btn {
+    min-width: 160px;
+    font-weight: bold;
+    letter-spacing: 1px;
+}
+
+.front-btn:hover {
+    background-color: #90ee90;
+}
+.back-btn:hover {
+    background-color: #ffe066;
+}
+
+.btn-group-title {
+    font-size: 28px;
+    font-weight: bold;
+    margin: 20px 0 10px 0;
+    text-align: left;
+}
+
+.del-btn {
+    background: #ff6666;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    padding: 4px 10px;
+    cursor: pointer;
+    font-size: 15px;
+    margin: auto;
+}
+.del-btn:hover {
+    background: #cc0000;
+}
+
+@media (max-width: 600px) {
+    .front-btn, .back-btn {
+        min-width: 90vw;
+        font-size: 18px;
+    }
+}
+

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MPOV2list</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<script>
+    function openWin(url) {
+        window.open(url, "_blank", "toolbar=yes, location=yes, directories=no, status=no, menubar=yes, scrollbars=yes, resizable=no, copyhistory=yes, width=400, height=400");
+    }
+</script>
+<body>
+    <h1>MPOV2選單</h1>
+
+        <form id="addBtnForm" style="text-align:center; margin-bottom:20px;">
+        <input type="text" id="btnName" placeholder="店家名稱" required>
+        <input type="url" id="btnUrl" placeholder="網址" required>
+        <select id="btnType">
+            <option value="front-btn">前台</option>
+            <option value="back-btn">後台</option>
+        </select>
+        <button type="submit">儲存</button>
+    </form>
+
+    <div id="userFrontBtns" class="btn-group"></div>
+    <div id="userBackBtns" class="btn-group"></div>
+
+    <script>
+    // filepath: d:\MPOV2list\index.html
+    document.getElementById('addBtnForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        let name = document.getElementById('btnName').value;
+        const url = document.getElementById('btnUrl').value;
+        const type = document.getElementById('btnType').value;
+
+        // 如果是後台，自動加上「(後台)」
+        if (type === 'back-btn' && !name.startsWith('(後台)')) {
+            name = '(後台)' + name;
+        }
+
+        let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
+
+        // 檢查是否已存在同名店家
+        if (btnList.some(btn => btn.name === name)) {
+            alert('已建立此商家');
+            return;
+        }
+
+        const btnData = { name, url, type };
+        btnList.push(btnData);
+        localStorage.setItem('userBtns', JSON.stringify(btnList));
+
+        addButtonToPage(btnData, btnList.length - 1);
+
+        this.reset();
+    });
+
+    // 將按鈕加到頁面
+    function addButtonToPage(btnData, index) {
+        const wrapper = document.createElement('span'); // 包裹按鈕與刪除鍵
+
+        const btn = document.createElement('input');
+        btn.type = 'button';
+        btn.value = btnData.name;
+        btn.className = btnData.type;
+        btn.onclick = function() { openWin(btnData.url); };
+
+        const delBtn = document.createElement('button');
+        delBtn.textContent = '刪除';
+        delBtn.className = 'del-btn';
+        delBtn.style.marginLeft = '8px';
+        delBtn.onclick = function() {
+            // 取得現有資料
+            let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
+            // 移除對應按鈕
+            btnList.splice(index, 1);
+            localStorage.setItem('userBtns', JSON.stringify(btnList));
+            // 從畫面移除
+            wrapper.remove();
+        };
+
+        wrapper.appendChild(btn);
+        wrapper.appendChild(delBtn);
+
+        if (btnData.type === 'front-btn') {
+            document.getElementById('userFrontBtns').appendChild(wrapper);
+        } else {
+            document.getElementById('userBackBtns').appendChild(wrapper);
+        }
+    }
+
+    // 載入時自動還原
+    window.addEventListener('DOMContentLoaded', function() {
+        let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
+        btnList.forEach((btnData, idx) => addButtonToPage(btnData, idx));
+    });
+    </script>
+</body>
+</html>
