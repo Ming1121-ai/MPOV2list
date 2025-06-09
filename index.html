@@ -16,7 +16,7 @@
 
         <form id="addBtnForm" style="text-align:center; margin-bottom:20px;">
         <input type="text" id="btnName" placeholder="店家名稱" required>
-        <input type="url" id="btnUrl" placeholder="網址" required>
+        <input type="text" id="btnUrl" placeholder="網址 (可只填IP)" required>
         <select id="btnType">
             <option value="front-btn">前台</option>
             <option value="back-btn">後台</option>
@@ -32,8 +32,13 @@
     document.getElementById('addBtnForm').addEventListener('submit', function(e) {
         e.preventDefault();
         let name = document.getElementById('btnName').value;
-        const url = document.getElementById('btnUrl').value;
+        let url = document.getElementById('btnUrl').value;
         const type = document.getElementById('btnType').value;
+
+        // 自動補上 http://
+        if (!/^https?:\/\//i.test(url)) {
+            url = 'http://' + url;
+        }
 
         // 如果是後台，自動加上「(後台)」
         if (type === 'back-btn' && !name.startsWith('(後台)')) {
@@ -42,8 +47,8 @@
 
         let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
 
-        // 檢查是否已存在同名店家
-        if (btnList.some(btn => btn.name === name)) {
+        // 檢查是否已存在同名店家或同網址
+        if (btnList.some(btn => btn.name === name || btn.url === url)) {
             alert('已建立此商家');
             return;
         }
@@ -53,6 +58,8 @@
         localStorage.setItem('userBtns', JSON.stringify(btnList));
 
         addButtonToPage(btnData, btnList.length - 1);
+
+        alert('建立完成'); // 新增這行
 
         this.reset();
     });
@@ -72,13 +79,16 @@
         delBtn.className = 'del-btn';
         delBtn.style.marginLeft = '8px';
         delBtn.onclick = function() {
-            // 取得現有資料
-            let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
-            // 移除對應按鈕
-            btnList.splice(index, 1);
-            localStorage.setItem('userBtns', JSON.stringify(btnList));
-            // 從畫面移除
-            wrapper.remove();
+            if (confirm('是否刪除此網址')) {
+                // 取得現有資料
+                let btnList = JSON.parse(localStorage.getItem('userBtns') || '[]');
+                // 移除對應按鈕
+                btnList.splice(index, 1);
+                localStorage.setItem('userBtns', JSON.stringify(btnList));
+                // 從畫面移除
+                wrapper.remove();
+            }
+            // 否則不執行任何動作
         };
 
         wrapper.appendChild(btn);
