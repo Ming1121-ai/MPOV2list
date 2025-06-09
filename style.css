@@ -21,6 +21,11 @@ body {
 
 form {
     text-align: center;
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: center;
+    gap: 8px;
 }
 
 .front-btn {
@@ -88,20 +93,48 @@ form {
 
 #btnName,
 #btnUrl {
-    width: 260px;
+    flex: 1 1 120px;
+    min-width: 0;
+    width: 180px;
+    max-width: 260px;
+}
+
+#btnType {
     height: 44px;
-    font-size: 20px;
+    font-size: 18px;
     border-radius: 12px;
-    border: 1.5px solid #ccc;
-    padding: 8px 16px;
-    margin: 0 8px 12px 8px;
-    box-sizing: border-box;
+    padding: 0 12px;
+}
+
+button[type="submit"] {
+    height: 44px;
+    font-size: 18px;
+    border-radius: 12px;
+    padding: 0 18px;
+    background: #2196f3;
+    color: #fff;
+    border: none;
+    cursor: pointer;
 }
 
 @media (max-width: 600px) {
     .front-btn, .back-btn {
         min-width: 90vw;
         font-size: 18px;
+    }
+    form {
+        flex-wrap: wrap;
+    }
+    #btnName,
+    #btnUrl {
+        width: 40vw;
+        min-width: 90px;
+        font-size: 16px;
+    }
+    #btnType,
+    button[type="submit"] {
+        font-size: 16px;
+        padding: 0 10px;
     }
 }
 
